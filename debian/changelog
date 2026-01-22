@@ -1,3 +1,9 @@
+opengothic (0.89) unstable; urgency=medium
+
+  * Test build.
+
+ -- Michael Langfermann <versable@gmail.com>  Thu, 22 Jan 2026 23:21:37 +0100
+
 opengothic (0.88-1) unstable; urgency=medium
 
   * Initial Debian packaging.
