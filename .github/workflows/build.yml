@@ -62,13 +62,13 @@ jobs:
       - name: Build Debian package
         run: |
           dpkg-buildpackage -us -uc -b
-          cp ../opengothic_*.deb .
+          cp ../opengothic_*.deb opengothic_x64.deb
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: opengothic_deb
-          path: opengothic_*.deb
+          path: opengothic_x64.deb
 
   windows:
     runs-on: windows-2025
@@ -210,7 +210,7 @@ jobs:
           prerelease: true
           files: |
             artifacts/opengothic_linux_x64.zip
-            artifacts/opengothic_deb/*.deb
+            artifacts/opengothic_deb/opengothic_x64.deb
             artifacts/opengothic_win_x64.zip
             artifacts/opengothic_osx_arm64.zip
             artifacts/opengothic_osx_x64.zip
