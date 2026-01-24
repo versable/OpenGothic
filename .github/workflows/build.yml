@@ -152,6 +152,39 @@ jobs:
           path: |
             build/opengothic/Gothic2Notr
 
+  macos:
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: brew install glslang molten-vk
+
+      - name: Generate build version
+        run: |
+          echo '#pragma once' > game/build.h
+          echo "static const char* appBuild = \"OpenGothic v${{ github.run_number }}\";" >> game/build.h
+
+      - name: Workaround for missing fp.h on modern macOS
+        run: |
+          sudo mkdir -p /usr/local/include
+          echo '#include <math.h>' | sudo tee /usr/local/include/fp.h
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+      - name: Build
+        run: cmake --build build --target Gothic2Notr -j $(sysctl -n hw.ncpu)
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: opengothic_osx
+          path: |
+            build/opengothic/Gothic2Notr
+
   release:
     if: startsWith(github.ref, 'refs/tags/')
     needs: [linux, linux-deb, windows, macos]
