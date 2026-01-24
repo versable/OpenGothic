@@ -38,9 +38,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_linux
-          path: |
-            build/opengothic/Gothic2Notr
+          name: opengothic_linux_x64
+          path: build/opengothic/Gothic2Notr
 
   linux-deb:
     runs-on: ubuntu-latest
@@ -113,13 +112,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_win
+          name: opengothic_win_x64
           path: |
             build/opengothic/*.exe
             build/opengothic/*.dll
             build/opengothic/*.bat
 
-  macos:
+  macos-arm64:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -148,11 +147,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_osx
+          name: opengothic_osx_arm64
           path: |
             build/opengothic/Gothic2Notr
 
-  macos:
+  macos-x64:
     runs-on: macos-15-intel
     steps:
       - uses: actions/checkout@v4
@@ -181,13 +180,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_osx
+          name: opengothic_osx_x64
           path: |
             build/opengothic/Gothic2Notr
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [linux, linux-deb, windows, macos]
+    needs: [linux, linux-deb, windows, macos-arm64, macos-x64]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -199,9 +198,10 @@ jobs:
 
       - name: Package release archives
         run: |
-          cd artifacts/opengothic_linux && zip -r ../opengothic_linux.zip . && cd ../..
-          cd artifacts/opengothic_win && zip -r ../opengothic_win.zip . && cd ../..
-          cd artifacts/opengothic_osx && zip -r ../opengothic_osx.zip . && cd ../..
+          cd artifacts/opengothic_linux_x64 && zip -r ../opengothic_linux_x64.zip . && cd ../..
+          cd artifacts/opengothic_win_x64 && zip -r ../opengothic_win_x64.zip . && cd ../..
+          cd artifacts/opengothic_osx_arm64 && zip -r ../opengothic_osx_arm64.zip . && cd ../..
+          cd artifacts/opengothic_osx_x64 && zip -r ../opengothic_osx_x64.zip . && cd ../..
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -209,7 +209,8 @@ jobs:
           draft: true
           prerelease: true
           files: |
-            artifacts/opengothic_linux.zip
+            artifacts/opengothic_linux_x64.zip
             artifacts/opengothic_deb/*.deb
-            artifacts/opengothic_win.zip
-            artifacts/opengothic_osx.zip
+            artifacts/opengothic_win_x64.zip
+            artifacts/opengothic_osx_arm64.zip
+            artifacts/opengothic_osx_x64.zip
