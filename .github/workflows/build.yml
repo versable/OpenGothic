@@ -13,7 +13,7 @@ env:
 
 jobs:
   linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,7 +42,7 @@ jobs:
           path: build/opengothic/Gothic2Notr
 
   linux-deb:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,7 +71,7 @@ jobs:
           path: opengothic_*.deb
 
   windows:
-    runs-on: windows-latest
+    runs-on: windows-2025
     defaults:
       run:
         shell: msys2 {0}
@@ -119,7 +119,7 @@ jobs:
             build/opengothic/*.bat
 
   macos-arm64:
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
         with:
