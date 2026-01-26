@@ -69,15 +69,22 @@ jobs:
           sudo apt-get install -y build-essential devscripts debhelper cmake g++ \
             glslang-tools libvulkan-dev libasound2-dev libx11-dev libxcursor-dev
 
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --batch --import
+
       - name: Generate build version
         run: |
           echo '#pragma once' > game/build.h
           echo "static const char* appBuild = \"${{ needs.setup.outputs.version }}\";" >> game/build.h
           dch -v "${{ needs.setup.outputs.semver }}" -D unstable -M "Automated build"
 
-      - name: Build Debian package
+      - name: Build and sign Debian package
+        env:
+          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
         run: |
-          dpkg-buildpackage -us -uc -b
+          dpkg-buildpackage -b -k"$GPG_KEY_ID"
           cp ../opengothic_*.deb opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
 
       - name: Upload artifact
