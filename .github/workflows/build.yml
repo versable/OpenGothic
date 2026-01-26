@@ -289,14 +289,14 @@ jobs:
 
       - name: Initialize repo structure
         run: |
-          mkdir -p gh-pages/debian/conf
-          cp source/debian/repo-conf/* gh-pages/debian/conf/
-          sed -i 's|basedir /tmp/repo|basedir .|' gh-pages/debian/conf/options
+          mkdir -p gh-pages/public/debian/conf
+          cp source/debian/repo-conf/* gh-pages/public/debian/conf/
+          sed -i 's|basedir /tmp/repo|basedir .|' gh-pages/public/debian/conf/options
 
       - name: Add package to APT repository
-        working-directory: gh-pages/debian
+        working-directory: gh-pages/public/debian
         run: |
-          reprepro includedeb ${{ steps.distro.outputs.name }} ../../artifacts/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb/*.deb
+          reprepro includedeb ${{ steps.distro.outputs.name }} ../../../artifacts/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb/*.deb
 
       - name: Commit and push
         working-directory: gh-pages
