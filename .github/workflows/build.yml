@@ -242,3 +242,71 @@ jobs:
             artifacts/opengothic_${{ needs.setup.outputs.semver }}_win_amd64.zip
             artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_arm64.zip
             artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_amd64.zip
+
+  update-apt-repo:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+    needs: [setup, linux-deb]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: source
+          sparse-checkout: debian/repo-conf
+
+      - name: Checkout or create gh-pages branch
+        run: |
+          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }}.git gh-pages 2>/dev/null || {
+            mkdir gh-pages
+            cd gh-pages
+            git init
+            git checkout --orphan gh-pages
+            git remote add origin https://github.com/${{ github.repository }}.git
+          }
+
+      - name: Download deb artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
+          path: deb
+
+      - name: Install reprepro
+        run: sudo apt-get update && sudo apt-get install -y reprepro
+
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --batch --import
+
+      - name: Determine distribution
+        id: distro
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "name=stable" >> $GITHUB_OUTPUT
+          else
+            echo "name=devel" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Initialize repo structure
+        run: |
+          mkdir -p gh-pages/debian/conf
+          cp source/debian/repo-conf/* gh-pages/debian/conf/
+          sed -i 's|basedir /tmp/repo|basedir .|' gh-pages/debian/conf/options
+
+      - name: Add package to repository
+        working-directory: gh-pages/debian
+        env:
+          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
+        run: |
+          reprepro --gnupghome ~/.gnupg includedeb ${{ steps.distro.outputs.name }} ../../deb/*.deb
+
+      - name: Commit and push
+        working-directory: gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git add -A
+          git commit -m "Update APT repo: ${{ steps.distro.outputs.name }} ${{ needs.setup.outputs.semver }}" || echo "No changes to commit"
+          git push origin gh-pages
