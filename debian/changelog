@@ -1,5 +1,758 @@
-opengothic (1.0.0) unstable; urgency=medium
+opengothic (1.0.3549-1) unstable; urgency=medium
 
-  * Initial Debian packaging.
+  * Fix smooth interpolation for move-triggers
+  * Fix fleeing for G1 npc's
+  * Fix AIV_PARTYMEMBER difference between Gothic 1 and Gothic 2
+  * Fix ammo checking for "best" weapons
+  * Align strafe/running controls with original game
+  * Game now memorizes, if door or chest lock was ever opened
+  * Add handling of Gothic 1 guilds
+  * Implement Gothic1 behavior for missing items
+  * Implement opening the map via hotkey in Gothic 1
+  * Added benchmark mode (`-benchmark` and `-benchmark ci`)
+  * Added marvin `set var` command
+  * Added marvin `playAni` command
+  * Change name check in way-point search
+  * npc_getdisttowp: ignore free points during the search
+  * Change ai_gotowp to seek only within way-points, and only then fallback on fallback to non-way points
+  * CsCamera: sequence duration can be longer then key of last frame
+  * CsCamera: refactor and smooth phasing
+  * Delay trigger sent by MOBSI interaction
+  * Added PARAMETERS/FPS_Limit, from SystemPack
+  * Added GAME/scaleVideos option in ini file
+  * Avoid rendering issues of alpha-tested materials in some mods
+  * Sync torch immediately after load
+  * Change npc scheduler, to avoid deadly state-loop for monsters
+  * Introduce npc_isincutscene script function
+  * Pre-initialize C_Npc::id to instanceId
+  * Hardcode allowed states for player's character
+  * Prevent softlocking the perceptionProcess
+  * Don't set victim when picking up an item from the floor
+  * Implement npc_sendsingleperc
+  * Fix npc tick desynchronization mechanism
+  * Fix rotate-animation of npc in AI_TurnToNpc
+  * Implement ITEM_PLACE animation tag
+  * Implement sound events for MOBSI
+  * Implement some function calls used in Gothic 1 scripts
+  * Implement 2 additional AI turn actions
+  * Support for software-ray tracing, for shadows. Use `-rtsm 1` in  command-line to toggle it on.
+  * Split direct and indirect fog scattering calculation, for sake of more accurate result
+  * Avoid TLAS update when ray-tracing enabled, but not in use
+  * Cleanup X11 code for full-screen and XIC
+  * Added dithering effect for sky
+  * Account for resolution scale in sun rendering
+  * Activate particle effects by camera position, instead of player position
+  * Adjust GI probe grid to HIDPI resolution
+  * Introduce background shader compilation thread
+  * Skip VSM page table initialization, if virtual shadow not in use
+  * Initial support for 32-bit memory mappings, for Ikarus
+  * Initial support for x86 assembly emulation, for Ikarus
+  * Allow to override main-menu with DMA
+  * Fix soft-lock in CoM, in pirate cutscene
+  * Fix soft-lock in L`Hiver with invalid use of AI_UseMob
+  * Correct initialization for "MENU_ITEM_ARMOR_11" text cell
+  * Unequip shield on AI_UnequipWeapons call
+  * Drop shield, after defeat in the fight
+  * Implement IFightAi as opaque binding
+  * GPU acceleration for Bink video
+  * HDPI support for interface and rendering
+  * windows/mac: UI now scales automatically, according to OS settings
+  * Added compatibility with INTERFACE/NewChapterSize settings of SystemPack
+  * Enable flag to turn on/off all subtitles
+  * Enable flag to turn on/off player subtitles
+  * Disable tessellation on QCom devices, to avoid driver crash
+  * Added workaround for intel vulkan driver bug, with bindless rendering, on Linux
+  * Avoid crash with null way-points
+  * Avoid crash in Bullet-physics, with complex meshes
+  * Avoid crash for incomplete vertex stream in skinned meshes
+  * Fix memory corruption error on MacOS
+  * Fix crash at loading empty music files
+  * @houkama made their first contribution in https://github.com/Try/OpenGothic/pull/194
+  * @lmichaelis made their first contribution in https://github.com/Try/OpenGothic/pull/209
+  * @fhanrath made their first contribution in https://github.com/Try/OpenGothic/pull/219
+  * @matthiakl made their first contribution in https://github.com/Try/OpenGothic/pull/284
+  * @thokkat made their first contribution in https://github.com/Try/OpenGothic/pull/317
+  * @Reveares made their first contribution in https://github.com/Try/OpenGothic/pull/383
+  * @CReimer made their first contribution in https://github.com/Try/OpenGothic/pull/397
+  * @sjavora made their first contribution in https://github.com/Try/OpenGothic/pull/400
+  * @raphaelahrens made their first contribution in https://github.com/Try/OpenGothic/pull/415
+  * @yuriytaranov made their first contribution in https://github.com/Try/OpenGothic/pull/429
+  * @PoetaKodu made their first contribution in https://github.com/Try/OpenGothic/pull/441
+  * @striezel made their first contribution in https://github.com/Try/OpenGothic/pull/472
+  * @ThielHater made their first contribution in https://github.com/Try/OpenGothic/pull/515
+  * @KirillAlekseeenko made their first contribution in https://github.com/Try/OpenGothic/pull/572
+  * @hwnde made their first contribution in https://github.com/Try/OpenGothic/pull/583
+  * @skejt23 made their first contribution in https://github.com/Try/OpenGothic/pull/650
+  * @Domarion made their first contribution in https://github.com/Try/OpenGothic/pull/672
+  * @LordKobra made their first contribution in https://github.com/Try/OpenGothic/pull/694
+  * @mmind made their first contribution in https://github.com/Try/OpenGothic/pull/714
+  * @versable made their first contribution in https://github.com/Try/OpenGothic/pull/736
+  * @carlo-bramini made their first contribution in https://github.com/Try/OpenGothic/pull/783
+  * @Sashimiyo made their first contribution in https://github.com/Try/OpenGothic/pull/809
+  * @ArminiusTux made their first contribution in https://github.com/Try/OpenGothic/pull/834
+  * @AIG-Livny made their first contribution in https://github.com/Try/OpenGothic/pull/846
 
- -- Michael Langfermann <versable@gmail.com>  Wed, 22 Jan 2026 12:00:00 +0000
+ -- Try <try9998@gmail.com>  Tue, 23 Dec 2025 12:11:23 +0000
+
+opengothic (1.0.3010-1) unstable; urgency=medium
+
+  * Improve handling of BS_STUMBLE/BS_PARADE
+  * Disallow to open inventory menu, while character is laying on the ground
+  * Disallow sliding, when character is in 'walk' mode
+  * Perception range for npc's are now driven by game-script
+  * Fixup for `isNoisy` check, when player interacting with MOBSI
+  * Gothic-1: added PERC_ASSESSREMOVEWEAPON
+  * Gothic-1: multiple improvements to spell-casting and alignment
+  * Now, best weapons are automatically equipped by npc on spawn (alignment to original game)
+  * Limit mouse rotation speed
+  * Filter out mouse-wheel event with zero delta
+  * Fix critical damage calculation for monsters
+  * Make sure that text messages do not overlap with health-bar
+  * Now npc view direction is aligned with corresponding way-point
+  * Multiple improvements to friendly-fire game mechanic, for companions and enemy
+  * Falling mechanic and animations are now closer to vanilla in behavior
+  * Marvin: add `ztimer multiplyer`
+  * Marvin: "set time" minutes argument can be omitted
+  * Marvin: add `goto vob` and `goto camera` commands
+  * Introduce support for iOS builds
+  * Log detail info for DeviceLostException
+  * Added extended gpu-crash logging for Metal on MacOS and iOS
+  * Use key down and support key repeat in game menu
+  * Systempack compatibility: added configurable camera-FOV
+  * Systempack compatibility: UI scale
+  * Systempack compatibility: INTERFACE/InventoryCellSize
+  * Systempack compatibility: health, mana, swim bar options
+  * Systempack compatibility: added INTERFACE/SaveGameImageSizeXY
+  * Added check for `useQuickSaveKeys` option when handling F5/F9 keys
+  * Game-config cleanup
+  * Disallow quick load while at pause
+  * Improved world load time
+  * Improved save-game time
+  * Now 'free' camera can be moved or rotated, while game is in suspended mode
+  * Hp bar for dead npc is  now hidden
+  * Experimental support for virtual shadowmap (`-vsm 1` in command-line or `toggle vsm` in marvin)
+  * Optimize shadows rendering for alpha-tested objects
+  * GPU-driven rendering optimizations
+  * Implement physically accurate sun color calculation, based on atmosphere properties
+  * Adjust sky and fog rendering to path-traced reference
+  * Fix appearance of clouds in water reflections
+  * CMAA2 integration
+  * Added basic(lanczos) upscaler
+  * Added optimization of ray-traversal flags for AMD
+  * Quality of SSAO significantly improved
+  * Skip mip-map generation for texture, if original texture has no mip's
+  * Added support for A4R4G4B4 texture format
+  * Introduce single pass `hiz` generation
+  * Introduced `dmusic` library as an option for music backend
+  * Added wld_removenpc
+  * Initial support for cutscene-camera(CsCamera, #531)
+  * npc_changeattribute: don't reduce hitpoints of immortal npcs
+  * npc_changeattribute: don't reduce hitpoints in godmode
+  * wld_getmobstate: function now detects nearest mob. This change is needed for correct work of some Gothic1 scripts
+  * Fix some Gothic 1 magic bugs (#682, #685)
+  * Fix npc-to-ray intersection test
+  * Fix possible use-after-free error in key-dispather
+  * Fix ini parsing: handle multiple values in the one line
+  * Fix(perf) workgroup size in copy-image
+  * Allow exit from load menu after trying to load empty save
+  * Do not apply TA(daily routines) to npc controlled by player
+  * Don't use a time limit for non-daily routine states
+  * Drop items from right hand instead of left hand
+  * Do not crash, if font-file is missing
+  * Allow spaces, tabs and unknown words in GAME/invCatOrder
+  * Added workaround for AMD driver issue with mesh shader
+  * Fix handling of Metal shading language versions
+  * Fix Gothic 1 melee blocking
+  * Fix spell charging animation
+  * Fix weapon undraw sound not being played
+  * Fix rendering of lock-picking messages
+  * Fix some dialog lines with guru in G1
+  * Fix handling of fireDelay parameter in triggers
+  * Add missing failureTarget trigger for CodeMaster trigger
+  * Praying/Sitting npc's now standing up on player interaction
+  * @houkama made their first contribution in https://github.com/Try/OpenGothic/pull/194
+  * @lmichaelis made their first contribution in https://github.com/Try/OpenGothic/pull/209
+  * @fhanrath made their first contribution in https://github.com/Try/OpenGothic/pull/219
+  * @matthiakl made their first contribution in https://github.com/Try/OpenGothic/pull/284
+  * @thokkat made their first contribution in https://github.com/Try/OpenGothic/pull/317
+  * @Reveares made their first contribution in https://github.com/Try/OpenGothic/pull/383
+  * @CReimer made their first contribution in https://github.com/Try/OpenGothic/pull/397
+  * @sjavora made their first contribution in https://github.com/Try/OpenGothic/pull/400
+  * @raphaelahrens made their first contribution in https://github.com/Try/OpenGothic/pull/415
+  * @yuriytaranov made their first contribution in https://github.com/Try/OpenGothic/pull/429
+  * @PoetaKodu made their first contribution in https://github.com/Try/OpenGothic/pull/441
+  * @striezel made their first contribution in https://github.com/Try/OpenGothic/pull/472
+  * @ThielHater made their first contribution in https://github.com/Try/OpenGothic/pull/515
+  * @KirillAlekseeenko made their first contribution in https://github.com/Try/OpenGothic/pull/572
+  * @hwnde made their first contribution in https://github.com/Try/OpenGothic/pull/583
+  * @Pinemarten made their first contribution in https://github.com/Try/OpenGothic/pull/650
+  * @Domarion made their first contribution in https://github.com/Try/OpenGothic/pull/672
+  * @LordKobra made their first contribution in https://github.com/Try/OpenGothic/pull/694
+
+ -- Try <try9998@gmail.com>  Mon, 23 Dec 2024 18:16:20 +0000
+
+opengothic (1.0.2207-1) unstable; urgency=medium
+
+  * Game
+  * Action focus is no longer available, if player is unconscious/dead
+  * Improve camera inertia
+  * AI now can use ladder for path-finding
+  * Ice-block spell: auto close inventory, if player is unconscious
+  * Fix ice-block stan duration
+  * Fix sell-price, when selling more than one item
+  * Disallow turning animation when action-key is held down.
+  * Disallow underwater way-points in AI_Flee
+  * Implement sneaking reactions
+  * Rework damage calculation
+  * Remove room check for SENSE_HEAR
+  * Align spell-cast player controls to original game
+  * General
+  * Optimize save-game time
+  * Added rechargeable spells support
+  * Fix Greg's hat display
+  * Biff dialogs: add orderId's for aiStopProcessInfo
+  * Added fallback for invalid start point
+  * Fix input problem when releasing one of two mapped keys
+  * GothicStarter: add -devmode flag support
+  * Add zCVobStair object type
+  * Add gothic1 skill values
+  * Added extra marvin commands (#398, #404, #471)
+  * Change waypoint indexing to support G1
+  * Graphics
+  * Physical lighting support
+  * Add irradiance support
+  * RayTracing: use hint gl_RayFlagsCullNoOpaqueEXT, if bindless in not available
+  * RayTracing: use proper opaque flags in TLAS
+  * RayTracing: enable bindless textures in DX12
+  * RayTracing: improve bindless for Vulkan
+  * Added stochastic fog support
+  * Optimize fog for low-quality setups
+  * Rescale alpha, after a-test
+  * Added blendOut for animations
+  * Better support for large-coordinates
+  * Water wave rendering
+  * Togglable water reflections
+  * Brightness/Contrast/Gamma settings
+  * Optimize fog shading
+  * Optimize meshlet packaging
+  * MacOS
+  * Automatic installation detection
+  * Fix key input in save-game menu
+  * Query max texture size on Metal
+  * Cleanup and generalize work with MacOS coordinate system
+  * Fix buffer alignment issue in Metal
+  * Make Mac-Command keys actionable
+  * Script-api
+  * Align PERC_ASSESSPLAYER to vanilla
+  * Add DAM_CRITICAL_MULTIPLIER, for Gothic 1
+  * Implemented AI_LOOKAT
+  * wld_insertnpc: allow empty waty-point names
+  * Bugs:
+  * Fix hnpc stashing at transform spells
+  * Fix PfxController in oldworld.zen
+  * Fix AI_UseItem
+  * Fix issue, when using transform spell, that is last in inventory
+  * Fix for G1 chests
+  * Fix npc deduction in wld_playeffect
+  * Prevent ranged damage from hitting twice
+  * Avoid issue in Silvio quest with Npc_ExchangeRoutine
+  * Avoid crash with Union.vdf
+  * Avoid soft-lock in B_AssessQuietSound
+  * npc_isdead : return false if npc is null
+  * Adjust camera selection for G1
+  * mdl_applyoverlaymdstimed: do not apply overlay, if not compatible
+
+ -- Try <try9998@gmail.com>  Tue, 27 Jun 2023 19:40:19 +0000
+
+opengothic (1.0.1891-1) unstable; urgency=medium
+
+  * Bugfix for OpenGothic to Union interaction
+  * Bugfix for Serialization issues on Linux
+
+ -- Try <try9998@gmail.com>  Sat, 28 Jan 2023 17:18:33 +0000
+
+opengothic (1.0.1878-1) unstable; urgency=medium
+
+  * Game
+  * Improve path-finding algorithm, for AI
+  * Adjust combo-attacks and battle animations to vanilla
+  * Added specific controls, related to Gothic2 control scheme
+  * Fix sneaking with bow animation
+  * Added support for ladders
+  * General
+  * Fix camera stutters
+  * Fix behavior of -rt command line key
+  * Added marin 'set time' command
+  * Add support for hideFocus and discard noFrate options in *.ini file
+  * Allow to pick items and use bow, while sneaking
+  * Graphics
+  * Switch rendering engine to linear color space
+  * Optimize SSAO, with help of compute shaders
+  * Improve sky scattering
+  * Added ray-query shadows
+  * Migrate geometry rendering to GL_EXT_mesh_shader
+  * Added per-particle trails
+  * 32-bit depth buffer is now default
+  * Added support for soft-shadows
+  * Music
+  * Update OpenAL to 1.22.2
+  * Enable music on MacOS
+  * Fix loading of sound variations (known as sheep sounds problem)
+  * MacOS
+  * Improve full-screen mode on Mac
+  * Bugs
+  * Avoid false-locking of UI thread, while loading
+  * Fix crash in npc_getequippedrangedweapon
+  * Fix exception handler in TriggerScript
+  * Fix ai_printscreen execution order
+  * Fix issue, that caused invalid world-state restore in some mods
+
+ -- Try <try9998@gmail.com>  Sun, 22 Jan 2023 16:16:06 +0000
+
+opengothic (1.0.1705-1) unstable; urgency=medium
+
+  * Game
+  * Do not allow to loot equipped items
+  * Align rotation speed to original game
+  * Fixed Francis dialog soft-lock
+  * When player about to interact with MOBSI, angle title will be reset
+  * Correct weapon stats, when forced to unequip
+  * Ignore bad input in pick-lock sequence
+  * Improved range-attack AI
+  * Fixed various beliar-sword issues
+  * Fixed double removal of items, when smitthing
+  * General
+  * Allow assign of num-keys to spells/runes directly
+  * Allow to open inventory while walking (walk animation will stop in that case)
+  * Allow using Enter in addition to LMB in journal and inventory
+  * Fix startup point fox npc
+  * Fix dialog window activation, when player uses interactive object
+  * Play stow animation if a drawn weapon is unequipped
+  * Added workaround for "TOT" freepoint
+  * Enable quickload hotkey
+  * Improved save-game dialog
+  * Script-api
+  * AI_PrintScreen is now asynchronus, as it should be
+  * Align SPL_NEXTLEVEL behavior, for non-leveled spells, with vanilla
+  * Read enabled .mod files from ini file
+  * Music
+  * Added workaround sound issues in Jharkendar
+  * Graphics
+  * Added water reflections support
+  * Added volumetric fog effect (Options -> Extended configuration -> Radial fog)
+  * Added clouds color hinting
+  * Added clouds occlusion
+  * Added support for ZMAXFPS
+  * 2-phase culling for HiZ
+  * Fix fatness for skeletal meshes
+  * Linux
+  * Fixed unicode inputs
+  * Fixed path-resolve for videos
+
+ -- Try <try9998@gmail.com>  Mon, 24 Oct 2022 20:48:07 +0000
+
+opengothic (1.0.1527-1) unstable; urgency=medium
+
+  * Game
+  * Added quest-log view
+  * Added pick-locking for doors
+  * Added the marvin 'o' command
+  * Fix pathing for Thorben, Vatras
+  * Fix character angling, while run
+  * Fix swiming in caves (Jarkentar)
+  * Fix AI_Flee implementation
+  * Fix bow-arrows sound effects
+  * Fix animation on chest closing
+  * Fix camera look-back
+  * Fix double damage for lurkers
+  * Fix atack+run animation, when G1 controls are disabled
+  * Disallow to use inventory, while in dialog
+  * General
+  * Added GAME.camLookaroundInverse option
+  * Allow to use OU files from archive
+  * Allow usage of mouse 4 and 5
+  * Added DEF_INV_TORCH tag support
+  * Added windIntensity support
+  * Added default settings values for case, when there is no ini-file
+  * Script-api
+  * Move init_global, startup_global to game loadtime phase, to better match original game
+  * Music
+  * Fix playing of zero-sized music patterns (Jack light-house)
+  * Graphics
+  * Added mesh shaders support
+  * Added RayQuery shadows
+  * Added SSAO support (Options -> Extended configuration -> Cloud shadows)
+  * Improved animation smoothing
+  * Add support for zWindEnabled option
+  * MacOS
+  * Fixed mouse-camera controls
+  * Windows
+  * System independant mouse sensitivity
+
+ -- Try <try9998@gmail.com>  Mon, 27 Jun 2022 19:30:28 +0000
+
+opengothic (1.0.1311-1) unstable; urgency=medium
+
+  * General
+  * New save-file format
+  * Improve camera behaviour, to match original game
+  * Added k-key functionality in Marvin Mode
+  * Marvin mode is now disabled by default (use b-marvin-b to activate)
+  * Added climb behaviour for AI
+  * multiple CPU-performance improvals
+  * Game
+  * Adjust melee combat to original game
+  * Added theft reaction
+  * Optimize sound occlusion calculation
+  * Add dynamic multi line support for dialogs
+  * Script-api
+  * Added wld_sendtrigger, zCTrigger.fireDelaySec
+  * Added init_global
+  * Graphics
+  * Added animation blending
+  * Use DEFAULT.TGA as fallback for missing textures
+  * Added wind animation
+  * Added model-fatness
+  * MacOS
+  * Fixed mouse-camera controls
+
+ -- Try <try9998@gmail.com>  Sat, 06 Nov 2021 16:40:40 +0000
+
+OpenGothic (0.48-1) unstable; urgency=medium
+
+  * General
+  * Added bounce behaviour for npc collision
+  * Improve swimming and diving
+  * Recognize spellType
+  * Improve torch mechanics
+  * Overall CPU usage optimization
+  * Script-api
+  * Implement AI_Flee
+  * Implement AI_LookAt
+  * Implement AI_PointAt, AI_PointAtNpc, AI_StopPointAt
+  * Implement Npc_IsInState
+  * Implement Wld_GetFormerPlayerPortalGuild
+  * Implement MOBSI::conditionFunc
+  * Implement Npc_GetDistToPlayer
+  * Bugfix
+  * Fixed wrong output of Npc_GetEquippedMeleeWeapon
+  * Fixed cliff sliding
+  * Fixed wall tonneling
+  * Fixed ground alignment for monsters
+  * Fixed animation solver cache
+
+ -- Try <try9998@gmail.com>  Sun, 01 Aug 2021 14:04:11 +0000
+
+opengothic (0.44-1) unstable; urgency=medium
+
+  * General
+  * Fix jump animation, for case when acrobatics skill is learned
+  * Fix VDF file loader, to improve mods-compatibility
+  * x64 is now default build type for windows
+  * Game
+  * Added support for area-spells, like rain/ice-wave
+  * Visual effect updated to look closer to original game
+  * Added support for "lightPresets"
+  * Equipped rings are now displayed on separated slots
+  * Equipped weapons are now displayed on separated slots
+  * Added support for GAME:INVCATORDER setting
+  * Added PERC_ASSESSENTERROOM perception for npc
+  * Allow invalid way-point names for npc
+  * Graphics
+  * Animation code is more robust now to prevent crashes, when mods are incompatible
+  * Fixed push-block size in Vulkan shaders
+  * Improved sky/fog shader
+  * Physics
+  * Added bullet-dynamics support
+  * Enable continuous collision detection
+  * Improved arrow physics: now arrows are bound back
+
+ -- Try <try9998@gmail.com>  Mon, 28 Jun 2021 09:48:39 +0000
+
+opengothic (1.0.1035-1) unstable; urgency=medium
+
+  * General
+  * Added names for save-games
+  * Adjust behavior of AI_ProcessInfo, to stop walking animation before dialog
+  * Optimize ZenLib to improve game load-time
+  * Added oCMobFire support - city lighting now works
+  * Initial torch support
+  * Graphics
+  * Added morphing animation
+  * Major progress on shadowmaps: shadows-pass now faster and image is more detailed
+  * Improve camera collision
+  * Particle-fx trails initial support
+  * Script-api
+  * Bugfix: initialize HERO, before calling any scripts(initScripts)
+  * Added dedicated overlay queue ("For the king!" quote now works)
+  * UI
+  * Multiple UI adjustments, to have consistency with original game
+
+ -- Try <try9998@gmail.com>  Sun, 18 Apr 2021 22:32:58 +0000
+
+opengothic (1.0.911-1) unstable; urgency=medium
+
+  * General
+  * Allow to draw weapons, while in dialog with npc
+  * Added "its too far away" message for interactive objects
+  * Mouse move/rotation speed adjusted to match original game
+  * Added box-shaped combat focus
+  * Added 'drop-item' action in inventory
+  * Weapon will be dropped on the ground after npc defeat
+  * Finalized support for climb-up physics
+  * Added pick-item animation
+  * Graphics
+  * Fog color now calculated based on sky color
+  * Skeletal animation was optimized
+  * Script-api
+  * Added wld_stopeffect
+  * Added ai_gotoitem
+  * Added wld_detectitem
+  * Changed AI_UseMob behavior in case when MOBSI object is too far from npc
+  * Added special effects: screenblend.scx, morph.fov
+  * Added PLAYER_PERC_ASSESSMAGIC callback support
+  * Bugfixes
+  * Duplicates are no longer allought in control settings
+  * Added workaround for script issue in B_StopMagicFreeze
+  * AI_Atack command will be skipped now, if npc has no active weapon
+  * Fixed display of double-sided decals
+  * Key '0' can be assigned to spell or rune now
+  * Allow closing inventory by any configured key
+  * Fix physic issue related to underwater caves
+  * Fixed multiple issues related to keyboard control in inventory menu
+
+ -- Try <try9998@gmail.com>  Mon, 18 Jan 2021 18:18:13 +0000
+
+opengothic (1.0.769-1) unstable; urgency=medium
+
+  * General
+  * Added initial support for underwater swimming
+  * Change camera easing algorithm - make camera smooth
+  * Graphics
+  * Improved Nishita sky shader
+  * Added fog effect
+  * Add support for C_ParticleFX::useEmittersFOR flag
+  * Script-api
+  * Change Free-point search distance (20m -> 5m)
+  * Bugfixes
+  * wld_settime now resets MOBSI states
+  * Fix spellscrolls counting in inventory
+  * Disallow to save game if player is dead
+  * Allow up/down arrows for dialog selection
+
+ -- Try <try9998@gmail.com>  Sat, 07 Nov 2020 12:42:18 +0000
+
+opengothic (1.0.732-1) unstable; urgency=medium
+
+  * General
+  * Added lockpicking support
+  * Graphics
+  * Added transparency effect for water
+  * Added deffered ligting support
+  * Optimized animation
+  * Added animation for dialog windows
+  * Script-api
+  * AI_UseItemToState can be used now with any `state` argument
+  * Added snd_play3d
+  * Added wld_setmobroutine
+  * Bugfixes
+  * Fix devision by zero error in physic engine
+  * Fix text-alignment in documents
+  * Disallow to interact with world, if player is dead or unconscious
+  * Fix SIT -> Talk animation transition
+  * Fix dialog camera, when talk to non-human creatures
+
+ -- Try <try9998@gmail.com>  Sun, 04 Oct 2020 13:30:41 +0000
+
+opengothic (1.0.688-1) unstable; urgency=medium
+
+  * General
+  * Added Bink-video support
+  * Attack angle for melee weapons has been increased
+  * Added side rotation for hero, when he running left-right
+  * Keyboard settings are now editable
+  * Added sound settings support
+  * New script-api
+  * Added `playvideo` function
+
+ -- Try <try9998@gmail.com>  Sat, 29 Aug 2020 12:14:48 +0000
+
+opengothic (1.0.657-1) unstable; urgency=medium
+
+  * General
+  * this change affects many of hidden doors/buttons to make them work properly
+  * Triggers
+  * Teleport in Jarkhendar valley now working
+  * Irdorath movable-bridge, key-master traps, final door now working
+  * Graphics
+  * New script-api
+  * all summoning spells are now working
+  * Fixed bugs
+  * Note
+
+ -- Try <try9998@gmail.com>  Sat, 25 Jul 2020 15:15:51 +0000
+
+opengothic (1.0.576-1) unstable; urgency=medium
+
+  * General
+  * Destroy undead now deals damage only to undead
+  * Destroy eveil now deals damage only to 'evil'
+  * Physics
+  * Graphics
+  * Linux(WIP)
+  * Fixed bugs
+  * Special thanks for contribution:
+
+ -- Try <try9998@gmail.com>  Thu, 14 May 2020 20:48:09 +0000
+
+opengothic (1.0.453-1) unstable; urgency=medium
+
+  * General
+  * New script-api
+  * Music
+  * Fixed bugs
+
+ -- Try <try9998@gmail.com>  Sun, 15 Mar 2020 18:19:26 +0000
+
+opengothic (1.0.406-1) unstable; urgency=medium
+
+  * General
+  * Added support for VK_KHR_DEDICATED_ALLOCATION
+  * Added key validation for chests
+  * Shader are now part of executable
+  * New perception: PERC_ASSESSBODY
+  * Added support for user controls settings from *.ini file
+  * Add support for C_GILVALUES::surface_align
+  * Add damage from falling calculation
+  * Blodflys can now fly over water
+  * Inventory
+  * Looting speed now increases when holding action button
+  * Improve item rendering
+  * Sound
+  * Fixed ADPCM sound decoder
+  * New animation events
+  * DEF_PLACE_MUNITION
+  * DEF_REMOVE_MUNITION
+
+ -- Try <try9998@gmail.com>  Sun, 09 Feb 2020 16:20:09 +0000
+
+opengothic (1.0.324-1) unstable; urgency=medium
+
+  * General
+  * fix for dead body cleanup
+  * add support for C_ParticleFXEmitKey
+  * improve sound effects for spells
+  * Ui
+  * Preliminary work on quest log
+  * Improve text alignment
+  * New script-api
+  * Npc_GetInvItem
+  * Fixed bugs
+  * fix magic cycle skill
+  * fix crash on world-switching
+  * fix damage calculation for magic golem
+  * fix ai haning for Fieldraiders
+
+ -- Try <try9998@gmail.com>  Fri, 03 Jan 2020 11:23:01 +0000
+
+opengothic (1.0.301-1) unstable; urgency=medium
+
+  * General
+  * Added animation layers
+  * Added proper MOBSI animation
+  * Added save/load menu
+  * Added support for builtin gothic font
+  * New animation events
+  * DEF_CREATE_ITEM
+  * DEF_EXCHANGE_ITEM
+  * DEF_INSERT_ITEM
+  * DEF_REMOVE_ITEM
+  * DEF_DESTROY_ITEM
+  * DEF_PLACE_ITEM
+  * Vob/Mobsi support
+  * Added "With with?" error message
+  * Added support for *_DIST attachemt points(rune table now working)
+  * Music
+  * music is still not done yet, but you can enable it by pressing F11
+
+ -- Try <try9998@gmail.com>  Sat, 14 Dec 2019 14:04:03 +0000
+
+opengothic (1.0.198-1) unstable; urgency=medium
+
+  * General
+  * Added detailed exception logging
+
+ -- Try <try9998@gmail.com>  Tue, 15 Oct 2019 17:52:41 +0000
+
+opengothic (1.0.191-1) unstable; urgency=medium
+
+  * General
+  * Added reversive animation support
+  * Added animation alias support
+  * Improve shadowmapping
+  * Added new sky-shader
+  * Day-night cycle implemented
+  * Added inventory icon rendereer
+  * Multiple minor changes for gothic1
+  * Added suport for DEF_FIGHTMODE model-tag
+  * Initial support for particles
+  * Fixed bugs
+  * AI_UseMob now checks new position of npc
+  * Monster now don't diest at 1 hp left (correct behavior is 0 hp)
+  * Fixed zone triggers collision detection - now no more problems with travel to Irdotar
+  * Fixed multople minor x64 rintime issues
+  * Fixed crash in xzen assets loader
+  * Fixed crash in phyfs with WindowsXP
+  * Fixed Npc_SetToFistmode issue
+  * Fixed BED, BOOK animation schemes
+  * New script-api
+  * Npc_HasReadiedMeleeWeapon
+  * ExitSession
+  * Build
+  * Fixed mingw64 build issues
+  * Preliminary work on Linux/X11 support
+
+ -- Try <try9998@gmail.com>  Sat, 12 Oct 2019 15:30:33 +0000
+
+opengothic (1.0.115-1) unstable; urgency=medium
+
+  * General
+  * Add bow, crossbow support
+  * Spell name now going to be printed, upon drawing spell
+  * New perceptions: PERC_ASSESSUSEMOB, PERC_ASSESSTHEFT
+  * Spellscroll now going to be removed from inventory, after use
+  * Add finishing move
+  * Vob/Mobsi support
+  * add zCVobSoundDaytime
+  * add zCTriggerList
+  * add oCTriggerScript
+  * add zCCodeMaster
+  * Physic
+  * Fixup for moving upwards ramp
+  * Fixed bugs
+  * Npc player now ignores all perceptions
+  * fix npc_sendpassiveperc argument order
+  * fix npc_setrefusetalk
+  * fix crash in C_Item constructor
+  * fix crash in renderer initialization
+  * fix FightAI for molerats and swamprats
+  * New script-api
+  * ai_finishingmove
+
+ -- Try <try9998@gmail.com>  Sat, 31 Aug 2019 21:35:52 +0000
+
+opengothic (1.0.69-1) unstable; urgency=medium
+
+  * General
+  * Vob/Mobsi support
+  * Physic
+  * New script-api
+
+ -- Try <try9998@gmail.com>  Sun, 11 Aug 2019 00:54:19 +0000
+
+opengothic (1.0.28-1) unstable; urgency=medium
+
+  first public build
+
+ -- Try <try9998@gmail.com>  Thu, 18 Jul 2019 08:58:16 +0000
+
