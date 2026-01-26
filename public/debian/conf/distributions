@@ -1,0 +1,15 @@
+Origin: OpenGothic
+Label: OpenGothic
+Codename: stable
+Architectures: amd64
+Components: main
+Description: OpenGothic stable releases
+SignWith: default
+
+Origin: OpenGothic
+Label: OpenGothic
+Codename: devel
+Architectures: amd64
+Components: main
+Description: OpenGothic development builds
+SignWith: default

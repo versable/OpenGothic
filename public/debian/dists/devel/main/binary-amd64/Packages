@@ -1,0 +1,22 @@
+Package: opengothic
+Version: 1.0.3678
+Architecture: amd64
+Maintainer: Michael Langfermann <versable@gmail.com>
+Installed-Size: 22242
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 4.0), libstdc++6 (>= 13.1), libvulkan1 (>= 1.2.131.2), libx11-6, libxcursor1 (>> 1.1.2)
+Homepage: https://github.com/Try/OpenGothic
+Priority: optional
+Section: games
+Filename: pool/main/o/opengothic/opengothic_1.0.3678_amd64.deb
+Size: 4030600
+SHA256: defe2aba2def0e62d3f156f51403f086b536d253b3b70918a1f2a1ebd3c83ac5
+SHA1: e5d628831c32701c8507cb53005037079a54b9d3
+MD5sum: 383ca83fd193b5a138e20d7d49fc14ef
+Description: Open source re-implementation of Gothic 2: Night of the Raven
+ OpenGothic is a feature-complete Gothic game client, compatible with the
+ original game data and mods. It makes the original Gothic 1 and Gothic 2
+ work on modern systems using Vulkan graphics.
+ .
+ Gothic 2: Night of the Raven is required as OpenGothic does not provide
+ any built-in game assets or scripts.
+

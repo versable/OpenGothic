@@ -1,0 +1,38 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Origin: OpenGothic
+Label: OpenGothic
+Codename: devel
+Date: Mon, 26 Jan 2026 17:47:49 UTC
+Architectures: amd64
+Components: main
+Description: OpenGothic development builds
+MD5Sum:
+ 621cf880fb06cfed2c59f4299ef85f64 962 main/binary-amd64/Packages
+ c6dad60cf1b113d1134f0e2dbdcd99bd 618 main/binary-amd64/Packages.gz
+ 91b40390a2a39ffb51bb1b0174c414de 116 main/binary-amd64/Release
+SHA1:
+ 2a26b04d0d428080330389d308b26e844448ab19 962 main/binary-amd64/Packages
+ 79bc6a7adc51c590fe5cba8918af6d97785c2a0f 618 main/binary-amd64/Packages.gz
+ d468a5d447501d6378d6380c9e1038217cc1cef0 116 main/binary-amd64/Release
+SHA256:
+ 21ea95f2241fde54670a9fe142e7dd86dc169745dd9d0504c440e85cb8675619 962 main/binary-amd64/Packages
+ 1f2663eda4f522787a6540f2356aa2d392f1d643479fbb0467f878224858a2b7 618 main/binary-amd64/Packages.gz
+ ee4e300af5726e89b3ce2cf56324c75aaa57023800978045b05419887e773d0b 116 main/binary-amd64/Release
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEK6sG2sxEriCs7vFy8ezW7EHgufwFAml3qMUACgkQ8ezW7EHg
+ufwANg/6A2PvQuycg/6yB45SgJEHhgtiQzW/I1dUoxUHI+nvTjHX5CfNGdeccluJ
+9mCVu3x3SAHl61pt0XG5Uxa093bdr6AtJXS3OQVEKGM6jO+4d0qnxVMCBXJINd+7
+buxEgnwbvbMHi5+GuvicYaV3LV15ffw2RVXxnMmYYlqro2si1k/uxvj6jFaQ3/gv
+e/7/Nad7kWe/qsnMOdLPnKCoQbfTv1nPGSKf1j0MAmB+nGFNIH/LxgZ6v3s8te+v
+7kan/jAx921ARwwdkl31k30lIAmlK7Cxnp5yUyXDyiJaS6Hit/X/jV/QWU7z869S
+lYfvELR31GW1ZEB2jAJYkk241s4nYGUfaBwkU0sYNX8xIPfPhCGm949GcwcEozID
+X+dO0qeIPx4wRpQRyUT/xMQq1VMTQeO6yi1ZuuXBUHoRHJaVTGqAB3O1DevpeScJ
+gKuW3oluIAznVfrcyUQR2LzquyiUpJF0i2h/NZQGhDh3+APK8sOYq/fxdM9tSbin
+pD2A5ffH9Irl5i/JziHqwqpvnyzgwPuyCrIS5SZIFutTUWCKJM4aZq208E19PixG
+VoXjVr0gOEoyasIwJPmcv+KT5E5NyiFunP81w0x7c+Ozenn42/Bqa4v4+WgPcREJ
+/0A8TCeC0JiCaXEGttVxJA3jynkMr7sd7O788Bu5esDrTUDa1aE=
+=4D+y
+-----END PGP SIGNATURE-----
