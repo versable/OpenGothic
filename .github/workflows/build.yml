@@ -21,8 +21,9 @@ jobs:
     steps:
       - id: version
         run: |
-          echo "version=OpenGothic v1.0.$((GITHUB_RUN_NUMBER + BUILD_OFFSET))" >> $GITHUB_OUTPUT
-          echo "semver=1.0.$((GITHUB_RUN_NUMBER + BUILD_OFFSET))" >> $GITHUB_OUTPUT
+          BUILD_NUM=$((GITHUB_RUN_NUMBER + BUILD_OFFSET))
+          echo "version=OpenGothic v1.0.${BUILD_NUM}" >> $GITHUB_OUTPUT
+          echo "semver=1.0.${BUILD_NUM}" >> $GITHUB_OUTPUT
 
   linux:
     needs: setup
@@ -51,7 +52,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_${{ needs.setup.outputs.semver }}_linux_x64
+          name: opengothic_${{ needs.setup.outputs.semver }}_linux_amd64
           path: build/opengothic/Gothic2Notr
 
   linux-deb:
@@ -77,13 +78,13 @@ jobs:
       - name: Build Debian package
         run: |
           dpkg-buildpackage -us -uc -b
-          cp ../opengothic_*.deb opengothic_${{ needs.setup.outputs.semver }}_linux_x64.deb
+          cp ../opengothic_*.deb opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_${{ needs.setup.outputs.semver }}_linux_x64.deb
-          path: opengothic_${{ needs.setup.outputs.semver }}_linux_x64.deb
+          name: opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
+          path: opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
 
   windows:
     needs: setup
@@ -128,7 +129,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_${{ needs.setup.outputs.semver }}_win_x64
+          name: opengothic_${{ needs.setup.outputs.semver }}_win_amd64
           path: |
             build/opengothic/*.exe
             build/opengothic/*.dll
@@ -198,7 +199,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: opengothic_${{ needs.setup.outputs.semver }}_osx_x64
+          name: opengothic_${{ needs.setup.outputs.semver }}_osx_amd64
           path: |
             build/opengothic/Gothic2Notr
 
@@ -218,10 +219,10 @@ jobs:
         env:
           VERSION: ${{ needs.setup.outputs.semver }}
         run: |
-          cd artifacts/opengothic_${VERSION}_linux_x64 && zip -r ../opengothic_${VERSION}_linux_x64.zip . && cd ../..
-          cd artifacts/opengothic_${VERSION}_win_x64 && zip -r ../opengothic_${VERSION}_win_x64.zip . && cd ../..
+          cd artifacts/opengothic_${VERSION}_linux_amd64 && zip -r ../opengothic_${VERSION}_linux_amd64.zip . && cd ../..
+          cd artifacts/opengothic_${VERSION}_win_amd64 && zip -r ../opengothic_${VERSION}_win_amd64.zip . && cd ../..
           cd artifacts/opengothic_${VERSION}_osx_arm64 && zip -r ../opengothic_${VERSION}_osx_arm64.zip . && cd ../..
-          cd artifacts/opengothic_${VERSION}_osx_x64 && zip -r ../opengothic_${VERSION}_osx_x64.zip . && cd ../..
+          cd artifacts/opengothic_${VERSION}_osx_amd64 && zip -r ../opengothic_${VERSION}_osx_amd64.zip . && cd ../..
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -229,8 +230,8 @@ jobs:
           draft: true
           prerelease: true
           files: |
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_linux_x64.zip
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_linux_x64.deb/opengothic_${{ needs.setup.outputs.semver }}_linux_x64.deb
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_win_x64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_linux_amd64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_win_amd64.zip
             artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_arm64.zip
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_x64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_amd64.zip
