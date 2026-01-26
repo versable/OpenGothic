@@ -49,11 +49,14 @@ jobs:
       - name: Build
         run: cmake --build build --target Gothic2Notr -j $(nproc)
 
+      - name: Package
+        run: zip -j opengothic_${{ needs.setup.outputs.semver }}_linux_amd64.zip build/opengothic/Gothic2Notr
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: opengothic_${{ needs.setup.outputs.semver }}_linux_amd64
-          path: build/opengothic/Gothic2Notr
+          path: opengothic_${{ needs.setup.outputs.semver }}_linux_amd64.zip
 
   linux-deb:
     needs: setup
@@ -133,14 +136,15 @@ jobs:
           cp "$MINGW_PREFIX/bin/libstdc++-6.dll" build/opengothic/
           cp "$MINGW_PREFIX/bin/libwinpthread-1.dll" build/opengothic/
 
+      - name: Package
+        shell: pwsh
+        run: Compress-Archive -Path build/opengothic/*.exe,build/opengothic/*.dll,build/opengothic/*.bat -DestinationPath opengothic_${{ needs.setup.outputs.semver }}_win_amd64.zip
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: opengothic_${{ needs.setup.outputs.semver }}_win_amd64
-          path: |
-            build/opengothic/*.exe
-            build/opengothic/*.dll
-            build/opengothic/*.bat
+          path: opengothic_${{ needs.setup.outputs.semver }}_win_amd64.zip
 
   macos-arm64:
     needs: setup
@@ -169,12 +173,14 @@ jobs:
       - name: Build
         run: cmake --build build --target Gothic2Notr -j $(sysctl -n hw.ncpu)
 
+      - name: Package
+        run: zip -j opengothic_${{ needs.setup.outputs.semver }}_osx_arm64.zip build/opengothic/Gothic2Notr
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: opengothic_${{ needs.setup.outputs.semver }}_osx_arm64
-          path: |
-            build/opengothic/Gothic2Notr
+          path: opengothic_${{ needs.setup.outputs.semver }}_osx_arm64.zip
 
   macos-x64:
     needs: setup
@@ -203,12 +209,14 @@ jobs:
       - name: Build
         run: cmake --build build --target Gothic2Notr -j $(sysctl -n hw.ncpu)
 
+      - name: Package
+        run: zip -j opengothic_${{ needs.setup.outputs.semver }}_osx_amd64.zip build/opengothic/Gothic2Notr
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: opengothic_${{ needs.setup.outputs.semver }}_osx_amd64
-          path: |
-            build/opengothic/Gothic2Notr
+          path: opengothic_${{ needs.setup.outputs.semver }}_osx_amd64.zip
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -222,28 +230,19 @@ jobs:
         with:
           path: artifacts
 
-      - name: Package release archives
-        env:
-          VERSION: ${{ needs.setup.outputs.semver }}
-        run: |
-          cd artifacts/opengothic_${VERSION}_linux_amd64 && zip -r ../opengothic_${VERSION}_linux_amd64.zip . && cd ../..
-          cd artifacts/opengothic_${VERSION}_win_amd64 && zip -r ../opengothic_${VERSION}_win_amd64.zip . && cd ../..
-          cd artifacts/opengothic_${VERSION}_osx_arm64 && zip -r ../opengothic_${VERSION}_osx_arm64.zip . && cd ../..
-          cd artifacts/opengothic_${VERSION}_osx_amd64 && zip -r ../opengothic_${VERSION}_osx_amd64.zip . && cd ../..
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           draft: true
           prerelease: true
           files: |
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_linux_amd64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_linux_amd64/opengothic_${{ needs.setup.outputs.semver }}_linux_amd64.zip
             artifacts/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_win_amd64.zip
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_arm64.zip
-            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_amd64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_win_amd64/opengothic_${{ needs.setup.outputs.semver }}_win_amd64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_arm64/opengothic_${{ needs.setup.outputs.semver }}_osx_arm64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_amd64/opengothic_${{ needs.setup.outputs.semver }}_osx_amd64.zip
 
-  update-apt-repo:
+  update-gh-pages:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
     needs: [setup, linux-deb]
     runs-on: ubuntu-24.04
@@ -269,7 +268,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
-          path: deb
+          path: artifacts/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
 
       - name: Install reprepro
         run: sudo apt-get update && sudo apt-get install -y reprepro
@@ -294,12 +293,10 @@ jobs:
           cp source/debian/repo-conf/* gh-pages/debian/conf/
           sed -i 's|basedir /tmp/repo|basedir .|' gh-pages/debian/conf/options
 
-      - name: Add package to repository
+      - name: Add package to APT repository
         working-directory: gh-pages/debian
-        env:
-          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
         run: |
-          reprepro --gnupghome ~/.gnupg includedeb ${{ steps.distro.outputs.name }} ../../deb/*.deb
+          reprepro includedeb ${{ steps.distro.outputs.name }} ../../artifacts/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb/*.deb
 
       - name: Commit and push
         working-directory: gh-pages
@@ -308,5 +305,40 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git add -A
-          git commit -m "Update APT repo: ${{ steps.distro.outputs.name }} ${{ needs.setup.outputs.semver }}" || echo "No changes to commit"
+          git commit -m "Update ${{ steps.distro.outputs.name }}: ${{ needs.setup.outputs.semver }}" || echo "No changes to commit"
           git push origin gh-pages
+
+  release-latest:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [setup, linux, linux-deb, windows, macos-arm64, macos-x64]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Delete existing latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release delete latest --repo ${{ github.repository }} --yes || true
+
+      - name: Create latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Development Build (${{ needs.setup.outputs.semver }})
+          prerelease: true
+          body: |
+            Automated development build from master branch.
+
+            **Version:** ${{ needs.setup.outputs.version }}
+            **Commit:** ${{ github.sha }}
+          files: |
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_linux_amd64/opengothic_${{ needs.setup.outputs.semver }}_linux_amd64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb/opengothic_${{ needs.setup.outputs.semver }}_amd64.deb
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_win_amd64/opengothic_${{ needs.setup.outputs.semver }}_win_amd64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_arm64/opengothic_${{ needs.setup.outputs.semver }}_osx_arm64.zip
+            artifacts/opengothic_${{ needs.setup.outputs.semver }}_osx_amd64/opengothic_${{ needs.setup.outputs.semver }}_osx_amd64.zip
