@@ -1,19 +1,19 @@
 Origin: OpenGothic
 Label: OpenGothic
 Codename: devel
-Date: Mon, 26 Jan 2026 17:47:49 UTC
+Date: Sat, 07 Feb 2026 10:15:28 UTC
 Architectures: amd64
 Components: main
 Description: OpenGothic development builds
 MD5Sum:
- 621cf880fb06cfed2c59f4299ef85f64 962 main/binary-amd64/Packages
- c6dad60cf1b113d1134f0e2dbdcd99bd 618 main/binary-amd64/Packages.gz
+ 035cbace29c7770c5218dcc6ed001340 962 main/binary-amd64/Packages
+ ad2d8ae806d3214fc31b19101a4fa6ce 617 main/binary-amd64/Packages.gz
  91b40390a2a39ffb51bb1b0174c414de 116 main/binary-amd64/Release
 SHA1:
- 2a26b04d0d428080330389d308b26e844448ab19 962 main/binary-amd64/Packages
- 79bc6a7adc51c590fe5cba8918af6d97785c2a0f 618 main/binary-amd64/Packages.gz
+ fac0fcd498c1aa01185080c71f11b3b79b62bc3c 962 main/binary-amd64/Packages
+ a8396260d7a30eceb711775e379cf31c8c9167c1 617 main/binary-amd64/Packages.gz
  d468a5d447501d6378d6380c9e1038217cc1cef0 116 main/binary-amd64/Release
 SHA256:
- 21ea95f2241fde54670a9fe142e7dd86dc169745dd9d0504c440e85cb8675619 962 main/binary-amd64/Packages
- 1f2663eda4f522787a6540f2356aa2d392f1d643479fbb0467f878224858a2b7 618 main/binary-amd64/Packages.gz
+ d4a7c7433bbe03e6b1376a6eacc6164b9b3fecc8f018595d3fd220ba3e38cadc 962 main/binary-amd64/Packages
+ f9cbd3a5f0af9bb933bb020eb7f3aeebb6cefc8349c71eb421e0dcd11a8dd97d 617 main/binary-amd64/Packages.gz
  ee4e300af5726e89b3ce2cf56324c75aaa57023800978045b05419887e773d0b 116 main/binary-amd64/Release
